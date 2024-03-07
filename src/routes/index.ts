@@ -1,6 +1,7 @@
 import {Express, Request, Response} from 'express'
 import {createShortUrl, handleRedirect, Genqrcode, getAnalytics} from '../controller/shortUrl.ctrl'
 import validateResource from '../middleware/validate.resource'
+import shortUrlSchema from "../Schemas/createShortUrl.schema";
 
 function routes(app:Express){
 

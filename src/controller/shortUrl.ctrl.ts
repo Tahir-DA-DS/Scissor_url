@@ -2,7 +2,6 @@ import {Request, Response} from 'express'
 import shortUrl from '../model/shortUrl.model'
 import shortid from 'shortid'
 import qr from 'qr-image';
-import {incrementAccessCount} from '../middleware/urlAccesscount'
 import AnalyticsModel, {Analytics} from '../model/Analytics.model'
 
 export async function createShortUrl(req:Request, res:Response){

@@ -1,4 +1,3 @@
-import { AnyObjectSchema } from "yup";
 import { Response, Request, NextFunction } from "express";
 
 const validateResource =

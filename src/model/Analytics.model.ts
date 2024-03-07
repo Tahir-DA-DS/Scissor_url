@@ -1,6 +1,5 @@
 import mongoose, { Document } from 'mongoose';
 import { ShortUrl } from '../model/shortUrl.model';
-import { number } from 'yup';
 
 export interface Analytics extends Document {
     shortUrl: ShortUrl['_id'];

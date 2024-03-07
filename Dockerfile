@@ -1,22 +1,20 @@
-FROM node:12-alpine
+FROM node:16-alpine
 
-ADD package.json /tap/package.json
+ADD package.json /tmp/package.json
 
-RUN rm -rf dist
+RUN rm -rf build
 
-RUN cd /tap && npm install -q
+RUN cd /tmp && npm install -q
 
-RUN npm dedupe
+# RUN npm dedupe
 
+# Code base
 ADD ./ /src
-RUN rm -rf /src/node_modules && cp -a /tap/node_modules /src/
+RUN rm -rf /src/node_modules && cp -a /tmp/node_modules /src/
 
+# Define working directory
 WORKDIR /src
 
 RUN npm run-script build
 
-RUN npm install pm2 -g
-
-EXPOSE 4000
-
-CMD [ "pm2-runtime", "process.json" ]
+CMD ["node", "build/src/app.js"]
