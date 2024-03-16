@@ -2,6 +2,3 @@
 /node_modules
 /build
 .env
-/Caddyfile
-/docker-compose.yml
-/Dockerfile
