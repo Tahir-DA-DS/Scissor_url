@@ -6,7 +6,7 @@ import db from './db'
 import bodyParser from 'body-parser'
 const app = express()
 
-const port = config.get('port')
+const port = process.env.PORT
 
 app.use(cors({origin:config.get("corsOrigin")}))
 app.use(bodyParser.json())
