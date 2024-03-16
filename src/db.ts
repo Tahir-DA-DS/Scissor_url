@@ -3,7 +3,7 @@ import config from "config";
 
  async function db (){
 
-    const dbUri = process.env.DB_URI as string
+    const dbUri: string = config.get('dbUri')
     try {
         await mongoose
         .connect(dbUri, {useNewUrlParser:true, useUnifiedTopology:true}as ConnectOptions)
