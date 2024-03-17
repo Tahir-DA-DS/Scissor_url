@@ -47,7 +47,7 @@ export async function handleRedirect(req:Request, res:Response){
         return res.sendStatus(404)
     }
 
-    res.redirect(short.destination)
+    res.json(short.destination)
 
     await AnalyticsModel.create({
       shortUrl: transformedUrl,
