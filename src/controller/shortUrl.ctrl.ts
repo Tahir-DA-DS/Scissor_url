@@ -42,18 +42,11 @@ export async function handleRedirect(req: Request, res: Response) {
   try {
     const { transformedUrl } = req.params;
 
-    
     const short = await shortUrl.findOne({ transformedUrl }).lean();
 
-    
     if (!short) {
       return res.sendStatus(404);
     }
-
-
-    res.redirect(short.destination);
-
-    
     await AnalyticsModel.create({
       shortUrl: transformedUrl,
       timestamp: new Date(),
@@ -65,11 +58,14 @@ export async function handleRedirect(req: Request, res: Response) {
       { shortUrl: transformedUrl },
       { $inc: { accessCount: 1 } }
     );
+
+    return res.redirect(short.destination);
   } catch (error) {
     console.error("Error handling redirect:", error);
     res.sendStatus(500); 
   }
 }
+
 
 export async function Genqrcode(req:Request, res:Response){
   const {transformedUrl} = req.params
