@@ -40,9 +40,9 @@ export async function createShortUrl(req:Request, res:Response){
 
 export async function handleRedirect(req: Request, res: Response) {
   try {
-    const { transformedUrl } = req.params;
+    const {transformedUrl}= req.params;
 
-    const short = await shortUrl.findOne({ transformedUrl }).lean();
+    const short = await shortUrl.findOne({transformedUrl}).lean();
 
     if (!short) {
       return res.sendStatus(404);
