@@ -1,8 +1,12 @@
 import {Request, Response} from 'express'
+import NodeCache from 'node-cache'
 import shortUrl from '../model/shortUrl.model'
 import shortid from 'shortid'
 import qr from 'qr-image';
 import AnalyticsModel, {Analytics} from '../model/Analytics.model'
+
+
+const cache = new NodeCache();
 
 export async function createShortUrl(req:Request, res:Response){
 
@@ -42,11 +46,19 @@ export async function handleRedirect(req: Request, res: Response) {
   try {
     const {transformedUrl}= req.params;
 
+    const cachedDestination = JSON.stringify(cache.get(transformedUrl));
+
+    if (cachedDestination) {
+      return res.redirect(cachedDestination);
+    }
+    
     const short = await shortUrl.findOne({transformedUrl}).lean();
 
     if (!short) {
       return res.sendStatus(404);
     }
+    cache.set(transformedUrl, short.destination);
+   
     await AnalyticsModel.create({
       shortUrl: transformedUrl,
       timestamp: new Date(),
@@ -59,7 +71,7 @@ export async function handleRedirect(req: Request, res: Response) {
       { $inc: { accessCount: 1 } }
     );
 
-    return res.redirect(short.destination);
+    return res.redirect(short.destination);;
   } catch (error) {
     console.error("Error handling redirect:", error);
     res.sendStatus(500); 
