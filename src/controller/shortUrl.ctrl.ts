@@ -44,9 +44,9 @@ export async function createShortUrl(req:Request, res:Response){
 
 export async function handleRedirect(req: Request, res: Response) {
   try {
-    const {transformedUrl}= req.params;
+    const {transformedUrl} = req.params;
 
-    const cachedDestination = JSON.stringify(cache.get(transformedUrl));
+    const cachedDestination = cache.get(transformedUrl);
 
     if (cachedDestination) {
       return res.redirect(cachedDestination);
@@ -57,6 +57,7 @@ export async function handleRedirect(req: Request, res: Response) {
     if (!short) {
       return res.sendStatus(404);
     }
+
     cache.set(transformedUrl, short.destination);
    
     await AnalyticsModel.create({
@@ -66,17 +67,18 @@ export async function handleRedirect(req: Request, res: Response) {
       userAgent: req.headers["user-agent"],
     });
 
-    await AnalyticsModel.findOneAndUpdate(
-      { shortUrl: transformedUrl },
+    await shortUrl.findOneAndUpdate(
+      { transformedUrl },
       { $inc: { accessCount: 1 } }
     );
 
-    return res.redirect(short.destination);;
+    return res.redirect(short.destination); // Corrected this line
   } catch (error) {
     console.error("Error handling redirect:", error);
     res.sendStatus(500); 
   }
 }
+
 
 
 export async function Genqrcode(req:Request, res:Response){
