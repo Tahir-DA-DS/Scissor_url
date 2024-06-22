@@ -6,7 +6,7 @@ import qr from 'qr-image';
 import AnalyticsModel, {Analytics} from '../model/Analytics.model'
 
 
-const cache = new NodeCache();
+
 
 export async function createShortUrl(req:Request, res:Response){
 
@@ -42,17 +42,21 @@ export async function createShortUrl(req:Request, res:Response){
 
 }
 
+
+
+const cache = new NodeCache();
+
 export async function handleRedirect(req: Request, res: Response) {
   try {
-    const {transformedUrl} = req.params;
+    const { transformedUrl } = req.params;
 
     const cachedDestination = cache.get(transformedUrl);
 
     if (cachedDestination) {
-      return res.redirect(cachedDestination);
+      return res.redirect(cachedDestination as string); // Cast to string
     }
     
-    const short = await shortUrl.findOne({transformedUrl}).lean();
+    const short = await shortUrl.findOne({ transformedUrl }).lean();
 
     if (!short) {
       return res.sendStatus(404);
@@ -72,12 +76,13 @@ export async function handleRedirect(req: Request, res: Response) {
       { $inc: { accessCount: 1 } }
     );
 
-    return res.redirect(short.destination); // Corrected this line
+    return res.redirect(short.destination);
   } catch (error) {
     console.error("Error handling redirect:", error);
-    res.sendStatus(500); 
+    res.sendStatus(500);
   }
 }
+
 
 
 

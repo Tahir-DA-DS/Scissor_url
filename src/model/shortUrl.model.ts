@@ -6,12 +6,13 @@ export interface ShortUrl extends Document {
     accessCount: number;
 }
 
+
 const schema = new mongoose.Schema({
-    destination: { type: String, required: true },
-    transformedUrl:{type: String, required: true, unique:true},
-    accessCount: { type: Number, default: 0 },
-    createdAt:{type:Date, default:Date.now()}
+  destination: { type: String, required: true },
+  transformedUrl: { type: String, required: true, unique: true },
+  accessCount: { type: Number, default: 0 } // Ensure this field exists
 });
+
 
 const ShortUrlModel = mongoose.model<ShortUrl>("ShortUrl", schema);
 
