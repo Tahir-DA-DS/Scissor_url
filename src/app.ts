@@ -7,8 +7,12 @@ import bodyParser from 'body-parser'
 const app = express()
 
 const port = config.get("port")
-
-app.use(cors())
+const corsOptions = {
+    origin: 'https://scissor-ui.vercel.app',  // Allow only your frontend URL
+    optionsSuccessStatus: 200,  // Some legacy browsers choke on 204
+  };
+  
+  app.use(cors(corsOptions));
 app.use(bodyParser.json())
 
 
