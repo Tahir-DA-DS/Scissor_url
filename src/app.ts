@@ -7,9 +7,20 @@ import bodyParser from 'body-parser'
 const app = express()
 
 const port = config.get("port")
-const corsOptions = {
-    origin: 'https://scissor-ui.vercel.app',  // Allow only your frontend URL
-    optionsSuccessStatus: 200,  // Some legacy browsers choke on 204
+
+const allowedOrigins = [
+    'https://scissor-ui.vercel.app',
+    'https://scissor-lxuc4wqvv-tahirdads-projects.vercel.app',  // Add your new Vercel deployment here
+  ];
+  
+  const corsOptions = {
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
   };
   
   app.use(cors(corsOptions));
