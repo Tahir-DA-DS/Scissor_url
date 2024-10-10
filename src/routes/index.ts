@@ -7,7 +7,7 @@ function routes(app:Express){
 
     app.post('/api/url', validateResource(), createShortUrl)
 
-    app.get("/:transformedUrl",  handleRedirect)
+    app.get("/:transformedUrl", cacheMiddleware,  handleRedirect)
 
     app.get('/analytics/:transformedUrl', getAnalytics)
 
