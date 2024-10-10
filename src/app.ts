@@ -8,7 +8,7 @@ const app = express()
 
 const port = config.get("port")
 
-app.use(cors({origin:config.get("corsOrigin")}))
+app.use(cors())
 app.use(bodyParser.json())
 
 
